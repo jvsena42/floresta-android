@@ -1,4 +1,4 @@
-package com.testfloresta.ui.theme
+package com.testfloresta.presentation.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
