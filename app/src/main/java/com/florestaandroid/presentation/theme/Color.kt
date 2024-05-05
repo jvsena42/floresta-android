@@ -1,4 +1,4 @@
-package com.testfloresta.presentation.ui.theme
+package com.florestaandroid.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

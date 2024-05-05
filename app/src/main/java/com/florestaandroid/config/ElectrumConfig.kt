@@ -1,12 +1,4 @@
-package com.testfloresta.config
-
-import android.util.Log
-import uniffi.floresta.Config
-import uniffi.floresta.Florestad
-import uniffi.floresta.Network
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.Socket
+package com.florestaandroid.config
 
 /*
 private lateinit var daemon: Florestad

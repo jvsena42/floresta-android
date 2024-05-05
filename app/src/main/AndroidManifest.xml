@@ -17,7 +17,7 @@
         android:theme="@style/Theme.TestFloresta"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.screens.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.TestFloresta.NoActionBar">
             <intent-filter>

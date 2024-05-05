@@ -1,14 +1,7 @@
-package com.testfloresta.presentation
+package com.florestaandroid.presentation.screens
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
-import uniffi.floresta.Config
-import uniffi.floresta.Florestad
-import uniffi.floresta.Network
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.Socket
 
 class MainActivity : FragmentActivity() {
 
