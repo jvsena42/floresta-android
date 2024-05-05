@@ -1,14 +1,10 @@
 package com.testfloresta
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import com.testfloresta.databinding.ActivityMainBinding
+import androidx.fragment.app.FragmentActivity
 import uniffi.floresta.Config
 import uniffi.floresta.Florestad
 import uniffi.floresta.Network
@@ -16,19 +12,14 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.Socket
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : FragmentActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
     private lateinit var daemon: Florestad
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        setSupportActionBar(binding.toolbar)
+//        setSupportActionBar(binding.toolbar)
 
 
         val datadir = application.dataDir.toString()
@@ -52,15 +43,32 @@ class MainActivity : AppCompatActivity() {
                         .toByteArray()
                 )
                 val text = BufferedReader(InputStreamReader(client.inputStream)).readLine()
-                runOnUiThread {
-                    findViewById<TextView>(R.id.textView).text = text
-                }
+                Log.d("MAIN_ACTIVITY", "TEXT_: $text")
+//                runOnUiThread {
+//                    findViewById<TextView>(R.id.textView).text = text
+//                }
                 Thread.sleep(10000)
             }
         })
 
         t.start()
     }
+
+/*    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            TestFlorestaTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Greeting(
+                        name = "Android",
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
+            }
+        }
+    }
+}*/
 
     override fun onDestroy() {
         daemon.stop()
@@ -80,11 +88,5 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
     }
 }
