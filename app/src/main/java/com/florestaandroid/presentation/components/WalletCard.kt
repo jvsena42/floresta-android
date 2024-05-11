@@ -84,6 +84,7 @@ fun WalletCard(
 
 @Preview(
     showBackground = true,
+    backgroundColor = 0xFF2C322D,
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
     name = "Dark"
 )
