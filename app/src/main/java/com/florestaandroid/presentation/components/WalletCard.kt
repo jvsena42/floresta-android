@@ -4,12 +4,11 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +24,7 @@ import com.florestaandroid.presentation.theme.spacing
 import com.testfloresta.R
 
 private val cardHeight = 180.dp
+private val cardWidth = 290.dp
 @Composable
 fun WalletCard(
     modifier: Modifier = Modifier,
@@ -44,8 +44,8 @@ fun WalletCard(
                 disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                 ),
             modifier = modifier
-                .defaultMinSize(minHeight = cardHeight)
-                .aspectRatio(ratio = 1.61f, matchHeightConstraintsFirst = true),
+                .height(cardHeight)
+                .width(cardWidth),
         ) {
 
             Column(
