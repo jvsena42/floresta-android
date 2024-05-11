@@ -65,6 +65,10 @@ fun WalletCard(
                     Text(
                         text = balance, style = MaterialTheme.typography.displayMedium,
                     )
+                    Text(
+                        text = "BTC", style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.padding(vertical = MaterialTheme.spacing.spacing8, horizontal = MaterialTheme.spacing.spacing4)
+                    )
                 }
 
                 VerticalSpacer(value = MaterialTheme.spacing.spacing16)
