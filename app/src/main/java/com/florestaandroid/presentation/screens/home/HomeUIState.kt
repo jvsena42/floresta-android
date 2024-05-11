@@ -1,11 +1,11 @@
 package com.florestaandroid.presentation.screens.home
 
 import androidx.compose.runtime.Stable
-import com.florestaandroid.data.model.Transaction
-import com.florestaandroid.data.model.WalletModel
+import com.florestaandroid.data.model.TransactionDTO
+import com.florestaandroid.data.model.WalletDTO
 
 @Stable
 data class HomeUIState(
-    val wallets: List<WalletModel> = emptyList(),
-    val transactions: List<Transaction> = emptyList()
+    val wallets: List<WalletDTO> = emptyList(),
+    val transactions: List<TransactionDTO> = emptyList()
 )
