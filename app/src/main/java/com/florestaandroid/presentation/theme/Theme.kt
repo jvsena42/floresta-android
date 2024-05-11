@@ -17,10 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-@Immutable
-data class ExtendedColorScheme(
-    val yellowFloresta: ColorFamily,
-)
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -248,60 +244,6 @@ private val highContrastDarkColorScheme = darkColorScheme(
     surfaceContainer = surfaceContainerDarkHighContrast,
     surfaceContainerHigh = surfaceContainerHighDarkHighContrast,
     surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
-)
-
-val extendedLight = ExtendedColorScheme(
-    yellowFloresta = ColorFamily(
-        yellowFlorestaLight,
-        onYellowFlorestaLight,
-        yellowFlorestaContainerLight,
-        onYellowFlorestaContainerLight,
-    ),
-)
-
-val extendedDark = ExtendedColorScheme(
-    yellowFloresta = ColorFamily(
-        yellowFlorestaDark,
-        onYellowFlorestaDark,
-        yellowFlorestaContainerDark,
-        onYellowFlorestaContainerDark,
-    ),
-)
-
-val extendedLightMediumContrast = ExtendedColorScheme(
-    yellowFloresta = ColorFamily(
-        yellowFlorestaLightMediumContrast,
-        onYellowFlorestaLightMediumContrast,
-        yellowFlorestaContainerLightMediumContrast,
-        onYellowFlorestaContainerLightMediumContrast,
-    ),
-)
-
-val extendedLightHighContrast = ExtendedColorScheme(
-    yellowFloresta = ColorFamily(
-        yellowFlorestaLightHighContrast,
-        onYellowFlorestaLightHighContrast,
-        yellowFlorestaContainerLightHighContrast,
-        onYellowFlorestaContainerLightHighContrast,
-    ),
-)
-
-val extendedDarkMediumContrast = ExtendedColorScheme(
-    yellowFloresta = ColorFamily(
-        yellowFlorestaDarkMediumContrast,
-        onYellowFlorestaDarkMediumContrast,
-        yellowFlorestaContainerDarkMediumContrast,
-        onYellowFlorestaContainerDarkMediumContrast,
-    ),
-)
-
-val extendedDarkHighContrast = ExtendedColorScheme(
-    yellowFloresta = ColorFamily(
-        yellowFlorestaDarkHighContrast,
-        onYellowFlorestaDarkHighContrast,
-        yellowFlorestaContainerDarkHighContrast,
-        onYellowFlorestaContainerDarkHighContrast,
-    ),
 )
 
 @Immutable
