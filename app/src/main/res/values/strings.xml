@@ -16,4 +16,5 @@
     <string name="sent">Sent</string>
     <string name="received">Received</string>
     <string name="waiting">Waiting</string>
+    <string name="all_transactions">All transactions</string>
 </resources>

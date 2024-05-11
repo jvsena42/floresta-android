@@ -70,7 +70,7 @@ private fun ScreenHome(
             VerticalSpacer(value = MaterialTheme.spacing.spacing32)
 
             Text(
-                text = stringResource(R.string.transactions),
+                text = stringResource(R.string.all_transactions),
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
