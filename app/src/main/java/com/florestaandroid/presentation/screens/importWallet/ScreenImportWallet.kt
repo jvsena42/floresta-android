@@ -70,6 +70,7 @@ private fun ScreenImportWallet(uiState: ImportWalletUIState) {
 
             InputOutlined(
                 value = uiState.xpubKey,
+                singleLine = false,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
@@ -116,7 +117,7 @@ private fun Preview2() {
     ScreenImportWallet(
         ImportWalletUIState(
             walletName = "Wallet of satoshi",
-            xpubKey = "12345-689cs-fs6d5f1-fsdfaserfsfdvf-6584",
+            xpubKey = "12345-689cs-fs6d5f1-fsdfaserfsfdvf-6584-12345-689cs-fs6d5f1-fsdfaserfsfdvf-6584-12345-689cs-fs6d5f1-fsdfaserfsfdvf-6584",
         )
     )
 }
