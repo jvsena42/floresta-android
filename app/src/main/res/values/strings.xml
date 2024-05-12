@@ -18,4 +18,8 @@
     <string name="waiting">Waiting</string>
     <string name="all_transactions">All transactions</string>
     <string name="btc">BTC</string>
+    <string name="import_wallet">Import wallet</string>
+    <string name="choose_the_wallet_name">Choose the wallet name</string>
+    <string name="set_the_xpub_key">Set the xpub key</string>
+    <string name="import_">Import</string>
 </resources>
