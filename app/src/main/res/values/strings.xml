@@ -17,4 +17,5 @@
     <string name="received">Received</string>
     <string name="waiting">Waiting</string>
     <string name="all_transactions">All transactions</string>
+    <string name="btc">BTC</string>
 </resources>

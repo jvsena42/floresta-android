@@ -49,6 +49,7 @@ fun Toolbar(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                         .clickable { onClickLeft?.invoke() }
+                        .padding(horizontal = MaterialTheme.spacing.spacing16)
                 )
             }
 
@@ -60,6 +61,7 @@ fun Toolbar(
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .clickable { onClickRight?.invoke() }
+                        .padding(horizontal = MaterialTheme.spacing.spacing16)
                 )
             }
 
