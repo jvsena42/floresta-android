@@ -17,6 +17,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.florestaandroid.presentation.screens.home.ScreenHome
+import com.florestaandroid.presentation.screens.importWallet.ScreenImportWallet
+import com.florestaandroid.presentation.screens.wallet.ScreenWallet
 import com.florestaandroid.presentation.theme.FlorestaAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,13 +41,17 @@ class MainActivity : FragmentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(route = Home.route) {
-                            Home.screen()
+                            ScreenHome(
+                                onClickSelectWallet = {
+                                    navController.navigateSingleTopTo(Wallet.route)
+                                }
+                            )
                         }
                         composable(route = ImportWallet.route) {
-                            ImportWallet.screen()
+                            ScreenImportWallet()
                         }
                         composable(route = Wallet.route) {
-                            Wallet.screen()
+                            ScreenWallet()
                         }
                     }
                 }
@@ -61,5 +68,5 @@ private fun NavHostController.navigateSingleTopTo(route: String) =
             saveState = true
         }
         launchSingleTop = true
-        restoreState = true
+        restoreState = false
     }

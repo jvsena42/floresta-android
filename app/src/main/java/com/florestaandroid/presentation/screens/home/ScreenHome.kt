@@ -30,8 +30,9 @@ import com.testfloresta.R
 
 @Composable
 fun ScreenHome(
-    viewModel: HomeViewModel = hiltViewModel(),
+    onClickSelectWallet: () -> Unit
 ) {
+    val viewModel: HomeViewModel = hiltViewModel()
     ScreenHome(uiState = HomeUIState()) //TODO GET STATE FROM VIEWMODEL
 }
 
