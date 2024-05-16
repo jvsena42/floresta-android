@@ -12,11 +12,15 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.florestaandroid.data.model.TransactionDTO
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.florestaandroid.data.model.TransactionType
+import com.florestaandroid.domain.model.TransactionModel
 import com.florestaandroid.presentation.components.Header
 import com.florestaandroid.presentation.components.TransactionItem
 import com.florestaandroid.presentation.components.VerticalSpacer
@@ -27,14 +31,26 @@ import com.testfloresta.R
 @Composable
 fun ScreenWallet(
     walletId: String?,
-    onClickImportWallet: (String) -> Unit
+    onClickImportWallet: (String) -> Unit,
+    onBackPressed: () -> Unit
 ) {
-    ScreenWallet(WalletUIState()) // TODO INJECT
+    val viewmodel: WalletViewModel  = hiltViewModel()
+    val uiState by viewmodel.uiState.collectAsState()
+    ScreenWallet(uiState, viewmodel::onAction)
+    LaunchedEffect(key1 = Unit) {
+        viewmodel.onAction(WalletViewModel.WalletActions.Setup(walletId))
+        viewmodel.screenEventFlow.collect { event ->
+            when(event) {
+                WalletViewModel.WalletEvents.NavigateBack -> onBackPressed()
+            }
+        }
+    }
 }
 
 @Composable
 private fun ScreenWallet(
-    uiState: WalletUIState
+    uiState: WalletUIState,
+    onAction : (WalletViewModel.WalletActions) -> Unit
 ) {
     FlorestaAndroidTheme {
         Column(
@@ -47,7 +63,8 @@ private fun ScreenWallet(
                 leftIcon = R.drawable.ic_chevrom_left,
                 rightIcon = R.drawable.ic_create,
                 title = uiState.name,
-                bodyText = uiState.balanceBTC
+                bodyText = uiState.balanceBTC,
+                onClickLeft = {onAction(WalletViewModel.WalletActions.OnBackPressed)}
             )
 
             VerticalSpacer(value = MaterialTheme.spacing.spacing32)
@@ -104,48 +121,49 @@ private fun Preview1() {
             name = "Wallet of satoshi",
             balanceBTC = "2.000987",
             transactions = listOf(
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.WAITING,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.RECEIVED,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.WAITING,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.RECEIVED,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
             )
-        )
+        ),
+        onAction = {}
     )
 }
 
@@ -161,47 +179,48 @@ private fun Preview2() {
             name = "Wallet of satoshi",
             balanceBTC = "2.000987",
             transactions = listOf(
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.WAITING,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.RECEIVED,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.WAITING,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.RECEIVED,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "8.00098896",
                     date = "05/11/2024 15:59"
                 ),
             )
-        )
+        ),
+        onAction = {}
     )
 }

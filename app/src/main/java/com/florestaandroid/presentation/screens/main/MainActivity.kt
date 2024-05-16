@@ -74,7 +74,8 @@ class MainActivity : FragmentActivity() {
                     walletId = walletIdArg,
                     onClickImportWallet = { walletId ->
                         navController.navigateSingleTopTo("${ImportWallet.route}/$walletId")
-                    }
+                    },
+                    onBackPressed = { navController.popBackStack() }
                 )
             }
         }
