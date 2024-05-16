@@ -10,9 +10,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.florestaandroid.presentation.components.InputOutlined
 import com.florestaandroid.presentation.components.Toolbar
 import com.florestaandroid.presentation.components.VerticalSpacer
@@ -22,13 +26,25 @@ import com.testfloresta.R
 
 @Composable
 fun ScreenImportWallet(
-    walletId: String?,
+    onBackPressed: () -> Unit
 ) {
-    ScreenImportWallet(ImportWalletUIState()) // TODO INJECT
+    val viewmodel: ImportWalletViewModel = hiltViewModel()
+    val uiState: ImportWalletUIState by viewmodel.uiState.collectAsState()
+    ScreenImportWallet(uiState = uiState, onAction = viewmodel::onAction)
+    LaunchedEffect(key1 = Unit) {
+        viewmodel.screenEventFlow.collect { event ->
+            when(event) {
+                ImportWalletViewModel.ImportWalletEvents.NavigateBack -> onBackPressed()
+            }
+        }
+    }
 }
 
 @Composable
-private fun ScreenImportWallet(uiState: ImportWalletUIState) {
+private fun ScreenImportWallet(
+    uiState: ImportWalletUIState,
+    onAction: (ImportWalletViewModel.ImportWalletActions) -> Unit
+) {
     FlorestaAndroidTheme {
         Column(
             modifier = Modifier
@@ -106,7 +122,7 @@ private fun ScreenImportWallet(uiState: ImportWalletUIState) {
 )
 @Composable
 private fun Preview1() {
-    ScreenImportWallet(ImportWalletUIState())
+    ScreenImportWallet(ImportWalletUIState()){}
 }
 
 @Preview(
@@ -121,5 +137,5 @@ private fun Preview2() {
             walletName = "Wallet of satoshi",
             xpubKey = "12345-689cs-fs6d5f1-fsdfaserfsfdvf-6584-12345-689cs-fs6d5f1-fsdfaserfsfdvf-6584-12345-689cs-fs6d5f1-fsdfaserfsfdvf-6584",
         )
-    )
+    ){}
 }

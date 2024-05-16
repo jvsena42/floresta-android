@@ -1,7 +1,6 @@
 package com.florestaandroid.presentation.screens.wallet
 
 import androidx.compose.runtime.Stable
-import com.florestaandroid.data.model.TransactionDTO
 import com.florestaandroid.domain.model.TransactionModel
 
 @Stable

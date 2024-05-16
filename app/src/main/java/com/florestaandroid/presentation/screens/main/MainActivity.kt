@@ -59,16 +59,18 @@ class MainActivity : FragmentActivity() {
                 )
             }
             composable(
-                route = ImportWallet.routeWithArgs,
-                arguments = ImportWallet.arguments) { navBackStackEntry ->
-                val walletId = navBackStackEntry.arguments?.getString(ImportWallet.walletIdArg)
+                route = ImportWallet.route,
+            ) {
                 ScreenImportWallet(
-                    walletId = walletId,
+                    onBackPressed = {
+                        navController.popBackStack()
+                    }
                 )
             }
             composable(
                 route = Wallet.routeWithArgs,
-                arguments = Wallet.arguments) {navBackStackEntry ->
+                arguments = Wallet.arguments
+            ) { navBackStackEntry ->
                 val walletIdArg = navBackStackEntry.arguments?.getString(Wallet.walletIdArg)
                 ScreenWallet(
                     walletId = walletIdArg,
