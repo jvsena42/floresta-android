@@ -27,8 +27,8 @@ class HomeViewModel @Inject constructor() : ViewModel(),
                     action.walletModel.id
                 )
             )
-
             HomeActions.Setup -> setup()
+            HomeActions.OnClickAddWallet -> viewModelScope.sendEvent(HomeEvents.NavigateImportWallet)
         }
     }
 
@@ -105,10 +105,12 @@ class HomeViewModel @Inject constructor() : ViewModel(),
 
     sealed interface HomeEvents {
         data class NavigateWalletScreen(val walletId: String) : HomeEvents
+        data object NavigateImportWallet : HomeEvents
     }
 
     sealed interface HomeActions {
         data object Setup : HomeActions
+        data object OnClickAddWallet : HomeActions
         data class OnCLickWallet(val walletModel: WalletModel) : HomeActions
     }
 }

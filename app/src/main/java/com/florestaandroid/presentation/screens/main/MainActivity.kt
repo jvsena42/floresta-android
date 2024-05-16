@@ -53,8 +53,11 @@ class MainActivity : FragmentActivity() {
         ) {
             composable(route = Home.route) {
                 ScreenHome(
-                    onClickSelectWallet = { walletId ->
+                    navigateWalletScreen = { walletId ->
                         navController.navigateSingleTopTo("${Wallet.route}/$walletId")
+                    },
+                    navigateImportWallet = {
+                        navController.navigateSingleTopTo(ImportWallet.route)
                     }
                 )
             }

@@ -22,4 +22,5 @@
     <string name="choose_the_wallet_name">Choose the wallet name</string>
     <string name="set_the_xpub_key">Set the xpub key</string>
     <string name="import_">Import</string>
+    <string name="create_a_new_wallet">Create a new wallet</string>
 </resources>
