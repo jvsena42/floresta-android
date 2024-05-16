@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.florestaandroid.data.model.TransactionDTO
 import com.florestaandroid.data.model.TransactionType
 import com.florestaandroid.data.model.WalletDTO
@@ -28,7 +29,9 @@ import com.florestaandroid.presentation.theme.spacing
 import com.testfloresta.R
 
 @Composable
-fun ScreenHome() {
+fun ScreenHome(
+    viewModel: HomeViewModel = hiltViewModel(),
+) {
     ScreenHome(uiState = HomeUIState()) //TODO GET STATE FROM VIEWMODEL
 }
 
