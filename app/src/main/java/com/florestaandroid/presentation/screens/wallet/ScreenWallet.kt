@@ -31,7 +31,6 @@ import com.testfloresta.R
 @Composable
 fun ScreenWallet(
     walletId: String?,
-    onClickImportWallet: (String) -> Unit,
     onBackPressed: () -> Unit
 ) {
     val viewmodel: WalletViewModel  = hiltViewModel()
@@ -61,10 +60,11 @@ private fun ScreenWallet(
             Header(
                 backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 leftIcon = R.drawable.ic_chevrom_left,
-                rightIcon = R.drawable.ic_create,
+                rightIcon = R.drawable.ic_delete_outline,
                 title = uiState.name,
                 bodyText = uiState.balanceBTC,
-                onClickLeft = {onAction(WalletViewModel.WalletActions.OnBackPressed)}
+                onClickLeft = {onAction(WalletViewModel.WalletActions.OnBackPressed)},
+                onClickRight = {onAction(WalletViewModel.WalletActions.OnClickDelete)}
             )
 
             VerticalSpacer(value = MaterialTheme.spacing.spacing32)

@@ -77,9 +77,6 @@ class MainActivity : FragmentActivity() {
                 val walletIdArg = navBackStackEntry.arguments?.getString(Wallet.walletIdArg)
                 ScreenWallet(
                     walletId = walletIdArg,
-                    onClickImportWallet = { walletId ->
-                        navController.navigateSingleTopTo("${ImportWallet.route}/$walletId")
-                    },
                     onBackPressed = { navController.popBackStack() }
                 )
             }

@@ -57,6 +57,7 @@ private fun ScreenImportWallet(
                 leftIconColor = MaterialTheme.colorScheme.onSurface,
                 titleColor = MaterialTheme.colorScheme.onSurface,
                 title = stringResource(R.string.import_wallet),
+                onClickLeft = { onAction(ImportWalletViewModel.ImportWalletActions.OnBackPressed) }
             )
 
             VerticalSpacer(value = MaterialTheme.spacing.spacing32)
