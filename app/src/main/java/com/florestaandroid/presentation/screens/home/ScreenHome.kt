@@ -14,6 +14,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.florestaandroid.data.model.TransactionDTO
 import com.florestaandroid.data.model.TransactionType
 import com.florestaandroid.data.model.WalletDTO
+import com.florestaandroid.domain.model.TransactionModel
+import com.florestaandroid.domain.model.WalletModel
 import com.florestaandroid.presentation.components.TransactionItem
 import com.florestaandroid.presentation.components.VerticalSpacer
 import com.florestaandroid.presentation.components.WalletCard
@@ -33,12 +37,14 @@ fun ScreenHome(
     onClickSelectWallet: (String) -> Unit
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
-    ScreenHome(uiState = HomeUIState()) //TODO GET STATE FROM VIEWMODEL
+    val uiState by viewModel.uiState.collectAsState()
+    ScreenHome(uiState = uiState, viewModel::onAction)
 }
 
 @Composable
 private fun ScreenHome(
-    uiState: HomeUIState
+    uiState: HomeUIState,
+    onAction: (HomeViewModel.HomeActions) -> Unit
 ) {
     FlorestaAndroidTheme {
         Column(
@@ -123,71 +129,71 @@ private fun Preview1() {
     ScreenHome(
         uiState = HomeUIState(
             wallets = listOf(
-                WalletDTO(
+                WalletModel(
                     name = "Wallet of satoshi",
-                    balanceBTC = 2.3,
+                    balanceBTC = "2.00003",
                     lastTransaction = "05/11/2024 15:59"
                 ),
-                WalletDTO(
+                WalletModel(
                     name = "Wallet of satoshi",
-                    balanceBTC = 2.3,
+                    balanceBTC = "2.00003",
                     lastTransaction = "05/11/2024 15:59"
                 ),
-                WalletDTO(
+                WalletModel(
                     name = "Wallet of satoshi",
-                    balanceBTC = 2.3,
+                    balanceBTC = "2.00003",
                     lastTransaction = "05/11/2024 15:59"
                 ),
-                WalletDTO(
+                WalletModel(
                     name = "Wallet of satoshi",
-                    balanceBTC = 2.3,
+                    balanceBTC = "2.00003",
                     lastTransaction = "05/11/2024 15:59"
                 ),
             ),
             transactions = listOf(
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.WAITING,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.RECEIVED,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.WAITING,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.RECEIVED,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
             )
         )
-    )
+    ){ }
 }
 
 @Preview(
@@ -201,54 +207,56 @@ private fun Preview2() {
     ScreenHome(
         uiState = HomeUIState(
             wallets = listOf(
-                WalletDTO(
+                WalletModel(
                     name = "Wallet of satoshi",
-                    balanceBTC = 2.3,
+                    balanceBTC = "2.00003",
                     lastTransaction = "05/11/2024 15:59"
                 ),
-                WalletDTO(
+                WalletModel(
                     name = "Wallet of satoshi",
-                    balanceBTC = 2.3,
+                    balanceBTC = "2.00003",
                     lastTransaction = "05/11/2024 15:59"
                 ),
-                WalletDTO(
+                WalletModel(
                     name = "Wallet of satoshi",
-                    balanceBTC = 2.3,
+                    balanceBTC = "2.00003",
                     lastTransaction = "05/11/2024 15:59"
                 ),
-                WalletDTO(
+                WalletModel(
                     name = "Wallet of satoshi",
-                    balanceBTC = 2.3,
+                    balanceBTC = "2.00003",
                     lastTransaction = "05/11/2024 15:59"
                 ),
             ),
             transactions = listOf(
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.WAITING,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.RECEIVED,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
-                TransactionDTO(
+                TransactionModel(
                     type = TransactionType.SENT,
-                    amount = 0.896,
+                    amount = "0.896",
                     date = "05/11/2024 15:59"
                 ),
             )
         )
-    )
+    ) {
+
+    }
 }
