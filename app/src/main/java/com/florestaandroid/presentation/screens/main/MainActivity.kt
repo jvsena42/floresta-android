@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,33 +37,43 @@ class MainActivity : FragmentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = Home.route,
+                    FlorestaNavHost(
+                        navController,
                         modifier = Modifier.padding(innerPadding)
-                    ) {
-                        composable(route = Home.route) {
-                            ScreenHome(
-                                onClickSelectWallet = {
-                                    navController.navigateSingleTopTo(Wallet.route)
-                                }
-                            )
-                        }
-                        composable(route = ImportWallet.route) {
-                            ScreenImportWallet()
-                        }
-                        composable(route = Wallet.route) {
-                            ScreenWallet()
-                        }
-                    }
+                    )
                 }
+            }
+        }
+    }
+
+    @Composable
+    private fun FlorestaNavHost(
+        navController: NavHostController,
+        modifier: Modifier
+    ) {
+        NavHost(
+            navController = navController,
+            startDestination = Home.route,
+            modifier = modifier
+        ) {
+            composable(route = Home.route) {
+                ScreenHome(
+                    onClickSelectWallet = {
+                        navController.navigateSingleTopTo(Wallet.route)
+                    }
+                )
+            }
+            composable(route = ImportWallet.route) {
+                ScreenImportWallet()
+            }
+            composable(route = Wallet.route) {
+                ScreenWallet()
             }
         }
     }
 }
 
-private fun NavHostController.navigateSingleTopTo(route: String) =
-    this.navigate(route) {
+private fun NavHostController.navigateSingleTopTo(route: String) = this.navigate(route) {
         popUpTo(
             this@navigateSingleTopTo.graph.findStartDestination().id
         ) {
