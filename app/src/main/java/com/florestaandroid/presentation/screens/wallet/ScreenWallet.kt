@@ -25,7 +25,10 @@ import com.florestaandroid.presentation.theme.spacing
 import com.testfloresta.R
 
 @Composable
-fun ScreenWallet() {
+fun ScreenWallet(
+    walletId: String?,
+    onClickImportWallet: (String) -> Unit
+) {
     ScreenWallet(WalletUIState()) // TODO INJECT
 }
 

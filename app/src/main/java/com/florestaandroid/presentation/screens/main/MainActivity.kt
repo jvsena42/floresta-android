@@ -3,15 +3,10 @@ package com.florestaandroid.presentation.screens.main
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -58,27 +53,40 @@ class MainActivity : FragmentActivity() {
         ) {
             composable(route = Home.route) {
                 ScreenHome(
-                    onClickSelectWallet = {
-                        navController.navigateSingleTopTo(Wallet.route)
+                    onClickSelectWallet = { walletId ->
+                        navController.navigateSingleTopTo("${Wallet.route}/$walletId")
                     }
                 )
             }
-            composable(route = ImportWallet.route) {
-                ScreenImportWallet()
+            composable(
+                route = ImportWallet.routeWithArgs,
+                arguments = ImportWallet.arguments) { navBackStackEntry ->
+                val walletId = navBackStackEntry.arguments?.getString(ImportWallet.walletIdArg)
+                ScreenImportWallet(
+                    walletId = walletId,
+                )
             }
-            composable(route = Wallet.route) {
-                ScreenWallet()
+            composable(
+                route = Wallet.routeWithArgs,
+                arguments = Wallet.arguments) {navBackStackEntry ->
+                val walletIdArg = navBackStackEntry.arguments?.getString(Wallet.walletIdArg)
+                ScreenWallet(
+                    walletId = walletIdArg,
+                    onClickImportWallet = { walletId ->
+                        navController.navigateSingleTopTo("${ImportWallet.route}/$walletId")
+                    }
+                )
             }
         }
     }
 }
 
 private fun NavHostController.navigateSingleTopTo(route: String) = this.navigate(route) {
-        popUpTo(
-            this@navigateSingleTopTo.graph.findStartDestination().id
-        ) {
-            saveState = true
-        }
-        launchSingleTop = true
-        restoreState = false
+    popUpTo(
+        this@navigateSingleTopTo.graph.findStartDestination().id
+    ) {
+        saveState = true
     }
+    launchSingleTop = true
+    restoreState = false
+}
