@@ -25,7 +25,12 @@ import com.florestaandroid.presentation.theme.spacing
 import com.testfloresta.R
 
 @Composable
-fun ScreenWallet(
+fun ScreenWallet() {
+    ScreenWallet(WalletUIState()) // TODO INJECT
+}
+
+@Composable
+private fun ScreenWallet(
     uiState: WalletUIState
 ) {
     FlorestaAndroidTheme {
