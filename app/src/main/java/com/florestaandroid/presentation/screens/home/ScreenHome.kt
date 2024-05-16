@@ -14,15 +14,14 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.florestaandroid.data.model.TransactionDTO
 import com.florestaandroid.data.model.TransactionType
-import com.florestaandroid.data.model.WalletDTO
 import com.florestaandroid.domain.model.TransactionModel
 import com.florestaandroid.domain.model.WalletModel
 import com.florestaandroid.presentation.components.TransactionItem
@@ -39,6 +38,15 @@ fun ScreenHome(
     val viewModel: HomeViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     ScreenHome(uiState = uiState, viewModel::onAction)
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.onAction(HomeViewModel.HomeActions.Setup)
+        viewModel.screenEventFlow.collect { event ->
+            when(event) {
+                is HomeViewModel.HomeEvents.NavigateWalletScreen -> onClickSelectWallet(event.walletId)
+            }
+        }
+    }
 }
 
 @Composable
@@ -70,9 +78,9 @@ private fun ScreenHome(
                 items(uiState.wallets) { wallet ->
                     WalletCard(
                         name = wallet.name,
-                        balance = wallet.balanceBTC.toString(),
+                        balance = wallet.balanceBTC,
                         latestTransaction = wallet.lastTransaction,
-                        onClick = {} //TODO IMPLEMENT
+                        onClick = { onAction(HomeViewModel.HomeActions.OnCLickWallet(wallet)) }
                     )
                 }
             }
