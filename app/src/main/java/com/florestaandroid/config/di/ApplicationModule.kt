@@ -16,9 +16,7 @@ class ApplicationModule {
     fun provideNodeClient(
         @ApplicationContext appContext: Application,
     ): NodeClient {
-        return NodeClient(
-            application = appContext,
-        )
+        return NodeClient()
     }
 
 

@@ -3,6 +3,7 @@ package com.florestaandroid.data.datasource
 import android.app.Application
 import com.florestaandroid.data.dto.request.ElectrumRequest
 import com.florestaandroid.data.dto.response.GetBalanceResponse
+import com.florestaandroid.data.toHexString
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,6 @@ import javax.inject.Inject
 
 class NodeClient @Inject constructor(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val application: Application
 ) {
     private lateinit var client: Socket
     private suspend fun connect() = withContext(dispatcher) {
@@ -37,15 +37,14 @@ class NodeClient @Inject constructor(
     }
 
     suspend fun getBalance(
-        xPubKeyHexString: String
+        xPubKey: String
     ): Flow<GetBalanceResponse> = flow {
         withContext(dispatcher) {
-
             client.outputStream.write(
                 Gson().toJson(
                     ElectrumRequest(
                         method = BlockchainMethods.GET_BALANCE.method,
-                        params = listOf(xPubKeyHexString)
+                        params = listOf(xPubKey.toByteArray().toHexString()) //TODO CHECK IF THIS IS RIGHT
                     )
                 ).toByteArray()
             )
@@ -54,8 +53,6 @@ class NodeClient @Inject constructor(
             val result = Gson().fromJson(text, GetBalanceResponse::class.java)
             emit(result)
         }
-    }.onCompletion {
-        disconnect()
     }
 
     private suspend fun disconnect() = withContext(dispatcher) {
