@@ -1,4 +1,4 @@
-package com.florestaandroid.data.request
+package com.florestaandroid.data.dto.request
 
 
 import com.google.gson.annotations.SerializedName
