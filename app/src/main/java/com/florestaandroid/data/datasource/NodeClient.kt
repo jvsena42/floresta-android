@@ -1,6 +1,8 @@
 package com.florestaandroid.data.datasource
 
 import android.app.Application
+import com.florestaandroid.data.request.ElectrumRequest
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,17 +22,26 @@ class NodeClient @Inject constructor(
 
     suspend fun subscribeHeader() = withContext(dispatcher) {
         client.outputStream.write(
-            """
-                {
-                    "jsonrpc": "2.0",
-                    "method": "blockchain.headers.subscribe",
-                    "params": [],
-                    "id": 1
-                }
-                """.toByteArray()
+            Gson().toJson(
+                ElectrumRequest(
+                    method = BlockchainMethods.SUBSCRIBE_HEADER.method,
+                    params = listOf()
+                )
+            ).toByteArray()
         )
+    }
 
-        val resultJson = BufferedReader(InputStreamReader(client.inputStream)).readLine()
+    suspend fun getBalance(
+        xPubKey: String
+    ) = withContext(dispatcher) {
+        client.outputStream.write(
+            Gson().toJson(
+                ElectrumRequest(
+                    method = BlockchainMethods.GET_BALANCE.method,
+                    params = listOf(xPubKey)
+                )
+            ).toByteArray()
+        )
     }
 
     private suspend fun disconnect() = withContext(dispatcher) {
