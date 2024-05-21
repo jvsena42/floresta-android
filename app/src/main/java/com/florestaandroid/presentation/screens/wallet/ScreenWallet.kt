@@ -31,9 +31,9 @@ import com.testfloresta.R
 @Composable
 fun ScreenWallet(
     walletId: String?,
+    viewmodel: WalletViewModel  = hiltViewModel(),
     onBackPressed: () -> Unit
 ) {
-    val viewmodel: WalletViewModel  = hiltViewModel()
     val uiState by viewmodel.uiState.collectAsState()
     ScreenWallet(uiState, viewmodel::onAction)
     LaunchedEffect(key1 = Unit) {

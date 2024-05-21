@@ -1,23 +1,35 @@
 package com.florestaandroid.presentation.screens.wallet
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.florestaandroid.data.datasource.NodeClient
 import com.florestaandroid.data.model.TransactionType
+import com.florestaandroid.domain.daemon.FlorestaDaemon
 import com.florestaandroid.domain.model.TransactionModel
 import com.florestaandroid.presentation.utils.EventFlow
 import com.florestaandroid.presentation.utils.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WalletViewModel @Inject constructor() : ViewModel(),
+class WalletViewModel @Inject constructor(
+    private val florestaDaemon: FlorestaDaemon,
+    private val nodeClient: NodeClient
+) : ViewModel(),
     EventFlow<WalletViewModel.WalletEvents> by EventFlowImpl() {
 
     private val _uiState = MutableStateFlow(WalletUIState())
     val uiState = _uiState.asStateFlow()
+
+    init {
+        florestaDaemon.start()
+    }
 
     fun onAction(action: WalletActions) {
         when (action) {
@@ -27,54 +39,18 @@ class WalletViewModel @Inject constructor() : ViewModel(),
         }
     }
 
-    private fun setup(walletId: String?) { // TODO REMOVE MOCK
-        _uiState.update { it.copy(
-            name = "Wallet of satoshi",
-            balanceBTC = "2.000987",
-            transactions = listOf(
-                TransactionModel(
-                    type = TransactionType.SENT,
-                    amount = "8.00098896",
-                    date = "05/11/2024 15:59"
-                ),
-                TransactionModel(
-                    type = TransactionType.WAITING,
-                    amount = "8.00098896",
-                    date = "05/11/2024 15:59"
-                ),
-                TransactionModel(
-                    type = TransactionType.RECEIVED,
-                    amount = "8.00098896",
-                    date = "05/11/2024 15:59"
-                ),
-                TransactionModel(
-                    type = TransactionType.SENT,
-                    amount = "8.00098896",
-                    date = "05/11/2024 15:59"
-                ),
-                TransactionModel(
-                    type = TransactionType.WAITING,
-                    amount = "8.00098896",
-                    date = "05/11/2024 15:59"
-                ),
-                TransactionModel(
-                    type = TransactionType.RECEIVED,
-                    amount = "8.00098896",
-                    date = "05/11/2024 15:59"
-                ),
-                TransactionModel(
-                    type = TransactionType.SENT,
-                    amount = "8.00098896",
-                    date = "05/11/2024 15:59"
-                ),
-                TransactionModel(
-                    type = TransactionType.SENT,
-                    amount = "8.00098896",
-                    date = "05/11/2024 15:59"
-                ),
-            )
-        ) }
-    }
+    private fun setup(walletId: String?) = viewModelScope.launch(Dispatchers.IO) { // TODO REMOVE MOCK
+            nodeClient.getBalance().collect {
+                it.onSuccess { response ->
+                    _uiState.update { it.copy(
+                        balanceBTC = response.confirmed.toString()
+                    ) }
+                }.onFailure { error ->
+                    Log.d("WalletViewModel", "setup: $error")
+                }
+            }
+
+        }
 
     private fun deleteWallet() {
 

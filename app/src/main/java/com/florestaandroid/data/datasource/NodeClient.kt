@@ -17,15 +17,18 @@ import java.net.Socket
 import javax.inject.Inject
 
 class NodeClient @Inject constructor(
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val dispatcher: CoroutineDispatcher
 ) {
+
+    private val xPubMock = "xpub6EGBW6hrQMgfheuZonwAxaYdHMuWwf2uUF2TGCFdbxWN5JjuiZnFt93edgedS1XAqvSh5Ef9Dy28aCsMwGHZWtUhPKZsyNkNqru1yo7cBhL"
+
 
     private suspend fun createSocket(): Socket = withContext(dispatcher) {
         return@withContext Socket("127.0.0.1", 50001)
     }
 
     suspend fun getBalance(
-        xPubKey: String
+        xPubKey: String = xPubMock // TODO REMOVE
     ): Flow<Result<GetBalanceResponse>> {
         val client = createSocket()
         return flow<Result<GetBalanceResponse>> {
