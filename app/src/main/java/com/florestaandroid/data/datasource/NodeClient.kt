@@ -8,6 +8,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -17,32 +19,24 @@ import javax.inject.Inject
 class NodeClient @Inject constructor(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
-    private lateinit var client: Socket
-    private suspend fun connect() = withContext(dispatcher) {
-        client = Socket("127.0.0.1", 50001)
-    }
 
-    suspend fun subscribeHeader() = withContext(dispatcher) {
-        client.outputStream.write(
-            Gson().toJson(
-                ElectrumRequest(
-                    method = BlockchainMethods.SUBSCRIBE_HEADER.method,
-                    params = listOf()
-                )
-            ).toByteArray()
-        )
+    private suspend fun createSocket(): Socket = withContext(dispatcher) {
+        return@withContext Socket("127.0.0.1", 50001)
     }
 
     suspend fun getBalance(
         xPubKey: String
-    ): Flow<Result<GetBalanceResponse>> = flow {
-        withContext(dispatcher) {
+    ): Flow<Result<GetBalanceResponse>> {
+        val client = createSocket()
+        return flow<Result<GetBalanceResponse>> {
             try {
                 client.outputStream.write(
                     Gson().toJson(
                         ElectrumRequest(
                             method = BlockchainMethods.GET_BALANCE.method,
-                            params = listOf(xPubKey.toByteArray().toHexString()) //TODO CHECK IF THIS IS RIGHT
+                            params = listOf(
+                                xPubKey.toByteArray().toHexString()
+                            ) //TODO CHECK IF THIS IS RIGHT
                         )
                     ).toByteArray()
                 )
@@ -50,13 +44,11 @@ class NodeClient @Inject constructor(
                 val text = BufferedReader(InputStreamReader(client.inputStream)).readLine()
                 val result = Gson().fromJson(text, GetBalanceResponse::class.java)
                 emit(Result.success(result))
-            } catch (e : Exception) {
+            } catch (e: Exception) {
                 emit(Result.failure(e))
             }
-        }
-    }
-
-    private suspend fun disconnect() = withContext(dispatcher) {
-        client.close()
+        }.onCompletion {
+            client.close()
+        }.flowOn(dispatcher)
     }
 }

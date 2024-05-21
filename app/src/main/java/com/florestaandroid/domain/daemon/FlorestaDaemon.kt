@@ -1,8 +1,6 @@
 package com.florestaandroid.domain.daemon
 
 import android.app.Application
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import uniffi.floresta.Config
 import uniffi.floresta.Florestad
 import uniffi.floresta.Network
@@ -14,7 +12,6 @@ interface FlorestaDaemon {
 }
 
 class FlorestaDaemonImpl @Inject constructor(
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val application: Application
 ) :FlorestaDaemon {
 
