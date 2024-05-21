@@ -9,22 +9,27 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 @InstallIn(SingletonComponent::class)
 class ApplicationModule {
 
     @Provides
-    fun provideNodeClient(
+    fun provideNodeClient(dispatcher: CoroutineDispatcher): NodeClient {
+        return NodeClient(dispatcher)
+    }
 
-    ): NodeClient {
-        return NodeClient()
+    @Provides
+    @ApplicationContext
+    fun provideApplication(application: Application): Application {
+        return application
     }
     @Provides
     fun provideDaemon(
         @ApplicationContext application: Application,
     ): FlorestaDaemon {
-        return FlorestaDaemonImpl(application.dataDir.toString())
+        return FlorestaDaemonImpl(application)
     }
 
 }
