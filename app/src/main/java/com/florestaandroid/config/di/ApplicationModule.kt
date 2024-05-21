@@ -2,6 +2,8 @@ package com.florestaandroid.config.di
 
 import android.app.Application
 import com.florestaandroid.data.datasource.NodeClient
+import com.florestaandroid.domain.daemon.FlorestaDaemon
+import com.florestaandroid.domain.daemon.FlorestaDaemonImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,10 +16,15 @@ class ApplicationModule {
 
     @Provides
     fun provideNodeClient(
-        @ApplicationContext appContext: Application,
+
     ): NodeClient {
         return NodeClient()
     }
-
+    @Provides
+    fun provideDaemon(
+        @ApplicationContext application: Application,
+    ): FlorestaDaemon {
+        return FlorestaDaemonImpl(application.dataDir.toString())
+    }
 
 }

@@ -1,6 +1,5 @@
 package com.florestaandroid.domain.daemon
 
-import android.app.Application
 import uniffi.floresta.Config
 import uniffi.floresta.Florestad
 import uniffi.floresta.Network
@@ -12,12 +11,12 @@ interface FlorestaDaemon {
 }
 
 class FlorestaDaemonImpl @Inject constructor(
-    private val application: Application
+    private val dataDirectory: String
 ) :FlorestaDaemon {
 
     private lateinit var daemon: Florestad
     override fun start() {
-        val datadir = application.dataDir.toString()
+        val datadir = dataDirectory
         val config = Config(
             false,
             listOf(),
