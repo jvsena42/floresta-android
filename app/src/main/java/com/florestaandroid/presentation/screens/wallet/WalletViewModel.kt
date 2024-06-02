@@ -28,24 +28,32 @@ class WalletViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        florestaDaemon.start()
+        setup()
     }
 
     fun onAction(action: WalletActions) {
         when (action) {
             WalletActions.OnBackPressed -> viewModelScope.sendEvent(WalletEvents.NavigateBack)
             WalletActions.OnClickDelete -> deleteWallet()
-            is WalletActions.Setup -> setup(action.walletId)
+            is WalletActions.Setup -> {}
         }
     }
 
-    private fun setup(walletId: String?) =
+    private fun setup() =
         viewModelScope.launch(Dispatchers.IO) { // TODO REMOVE MOCK
+            Log.d(TAG, "setup: antes")
+            florestaDaemon.start()
+            Log.d(TAG, "setup: depois")
             nodeClient.getBalance().collect {
 
             }
 
         }
+
+    override fun onCleared() {
+        super.onCleared()
+        florestaDaemon.stop()
+    }
 
     private fun deleteWallet() {
 
@@ -59,5 +67,9 @@ class WalletViewModel @Inject constructor(
         data class Setup(val walletId: String?) : WalletActions
         data object OnBackPressed : WalletActions
         data object OnClickDelete : WalletActions
+    }
+
+    companion object {
+        const val TAG = "NodeClient"
     }
 }

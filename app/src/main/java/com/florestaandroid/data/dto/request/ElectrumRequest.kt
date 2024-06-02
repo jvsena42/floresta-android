@@ -1,15 +1,17 @@
 package com.florestaandroid.data.dto.request
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-import com.google.gson.annotations.SerializedName
 
+@Serializable
 data class ElectrumRequest(
 //    @SerializedName("id")
 //    val id: Int,
-    @SerializedName("jsonrpc")
+    @SerialName("jsonrpc")
     val jsonrpc: String = "2.0",
-    @SerializedName("method")
+    @SerialName("method")
     val method: String,
-    @SerializedName("params")
-    val params: List<Any>
+    @SerialName("params")
+    val params: List<String>
 )
