@@ -1,19 +1,13 @@
 package com.florestaandroid.data.datasource
 
-import com.florestaandroid.data.dto.request.ElectrumRequest
+import android.util.Log
 import com.florestaandroid.data.dto.response.GetBalanceResponse
-import com.florestaandroid.data.toHexString
-import com.google.gson.Gson
+import io.ktor.network.selector.SelectorManager
+import io.ktor.network.sockets.aSocket
+import io.ktor.network.sockets.openReadChannel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.withContext
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.Socket
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 class NodeClient @Inject constructor(
@@ -22,16 +16,29 @@ class NodeClient @Inject constructor(
 
     private val xPubMock = "xpub6EGBW6hrQMgfheuZonwAxaYdHMuWwf2uUF2TGCFdbxWN5JjuiZnFt93edgedS1XAqvSh5Ef9Dy28aCsMwGHZWtUhPKZsyNkNqru1yo7cBhL"
 
+    val selectorManager = SelectorManager(dispatcher)
+    val serverSocket = aSocket(selectorManager).tcp().bind("127.0.0.1", 50001)
 
-    private suspend fun createSocket(): Socket = withContext(dispatcher) {
-        return@withContext Socket("127.0.0.1", 50001)
-    }
 
     suspend fun getBalance(
         xPubKey: String = xPubMock // TODO REMOVE
-    ): Flow<Result<GetBalanceResponse>> {
-        val client = createSocket()
-        return flow<Result<GetBalanceResponse>> {
+    )= callbackFlow<Result<GetBalanceResponse>> {
+        val socket = serverSocket.accept()
+
+        try {
+            val receiveChannel = socket.openReadChannel()
+
+            receiveChannel.readUTF8Line(10000)?.let { json ->
+                Json.decodeFromString<GetBalanceResponse>(json)
+            }?.let { balance ->
+                trySend(Result.success(balance))
+            }
+        }catch (e: Exception) {
+            Log.d(TAG, "getBalance: ${e.stackTraceToString()}")
+            trySend(Result.failure(e))
+        }
+
+       /* return flow<Result<GetBalanceResponse>> {
             try {
                 client.outputStream.write(
                     Gson().toJson(
@@ -52,6 +59,10 @@ class NodeClient @Inject constructor(
             }
         }.onCompletion {
             client.close()
-        }.flowOn(dispatcher)
+        }.flowOn(dispatcher)*/
+    }
+
+    companion object {
+        private const val TAG = "NodeClient"
     }
 }

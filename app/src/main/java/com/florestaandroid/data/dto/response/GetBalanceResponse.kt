@@ -1,11 +1,13 @@
 package com.florestaandroid.data.dto.response
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-import com.google.gson.annotations.SerializedName
 
+@Serializable
 data class GetBalanceResponse(
-    @SerializedName("confirmed")
+    @SerialName("confirmed")
     val confirmed: Int,
-    @SerializedName("unconfirmed")
+    @SerialName("unconfirmed")
     val unconfirmed: Int
 )

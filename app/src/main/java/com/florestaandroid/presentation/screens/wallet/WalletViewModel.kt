@@ -39,15 +39,10 @@ class WalletViewModel @Inject constructor(
         }
     }
 
-    private fun setup(walletId: String?) = viewModelScope.launch(Dispatchers.IO) { // TODO REMOVE MOCK
+    private fun setup(walletId: String?) =
+        viewModelScope.launch(Dispatchers.IO) { // TODO REMOVE MOCK
             nodeClient.getBalance().collect {
-                it.onSuccess { response ->
-                    _uiState.update { it.copy(
-                        balanceBTC = response.confirmed.toString()
-                    ) }
-                }.onFailure { error ->
-                    Log.d("WalletViewModel", "setup: $error")
-                }
+
             }
 
         }
