@@ -19,6 +19,8 @@ fun String.hexStringToByteArray() : ByteArray {
     return result
 }
 
+fun List<UByte>.toHexString(): String = joinToString("") { it.toString(16).padStart(2, '0') }
+
 fun ByteArray.toHexString() : String {
     val result = StringBuffer()
 
